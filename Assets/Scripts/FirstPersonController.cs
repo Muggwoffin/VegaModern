@@ -1,6 +1,9 @@
-using System;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class FirstPersonController : MonoBehaviour
 {
@@ -15,14 +18,35 @@ public class FirstPersonController : MonoBehaviour
     public float jumpHeight = 1.0f;
     private bool jumpPressed;
 
-    [Header("Headbob")] public float bobSpeed = 14f;
+    [Header("Brisk Walk")] 
+    public float briskMultiplier = 1.5f;
+    private bool isBrisk = false;
+    
+    [Header("UI")]
+    public UnityEngine.UI.Image reticleImage;
+
+    public Color normalReticleColor = Color.beige;
+    public Color interactReticleColor = Color.darkGreen;
+    
+    [Header("Headbob")] 
+    public float bobSpeed = 14f;
     public float bobAmount = 0.02f;
     public float swayAmount = 0.1f;
     private Vector3 originalCamPos;
     private float timer = 0f;
+
+    [Header("Interact")] public float interactRange = 3f;
+    public LayerMask interactableLayer;
+    
+    [Header("Gentle Movement")]
+    public float acceleration = 10f;
+    public float decceleration = 12f;
+    Vector3 currentMoveVelocity;
     
     private float xRotation = 0f;
     private PlayerInput playerInput;
+    
+ 
 
     private void Awake()
     {
@@ -42,13 +66,39 @@ public class FirstPersonController : MonoBehaviour
     
     void Update()
     {
-
+        BriskWiden();
         MoveCharacter();
         RotationLogic();
         HeadBob();
-
+        InteractableCheck();
     }
-    
+
+    private void InteractableCheck()
+    {
+        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactRange))
+        {
+            if (hit.collider.TryGetComponent(out IInteractable interactable))
+            {
+                reticleImage.color = interactReticleColor;
+                return;
+            }
+        }
+        reticleImage.color = normalReticleColor;
+    }
+
+    private void BriskWiden()
+    {
+        float targetFOV = isBrisk ? 65f : 60f;
+        cameraTransform.GetComponent<Camera>().fieldOfView = Mathf.Lerp(
+            cameraTransform.GetComponent<Camera>().fieldOfView, 
+            targetFOV, 
+            Time.deltaTime * 5f
+        );
+    }
+
     private void HeadBob()
     {
         float currentSpeed = GetMovementSpeed();
@@ -67,6 +117,20 @@ public class FirstPersonController : MonoBehaviour
     private void MoveCharacter()
     {
         Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
+        
+        float currentSpeed = isBrisk ? moveSpeed * briskMultiplier : moveSpeed;
+        
+        Vector3 desiredVelocity = move * currentSpeed;
+        
+
+        if (move.magnitude > 0.01f)
+        {
+            currentMoveVelocity = Vector3.MoveTowards(currentMoveVelocity, desiredVelocity, acceleration * Time.deltaTime);
+        }
+        else
+        {
+            currentMoveVelocity = Vector3.MoveTowards(currentMoveVelocity, Vector3.zero, decceleration * Time.deltaTime);
+        }
 
         if (controller.isGrounded)
         {
@@ -85,7 +149,7 @@ public class FirstPersonController : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
 
-        Vector3 finalFrameMovement = (move * moveSpeed) + velocity;
+        Vector3 finalFrameMovement = currentMoveVelocity + velocity;
         controller.Move(finalFrameMovement * Time.deltaTime);
     }
     private void RotationLogic()
@@ -107,6 +171,31 @@ public class FirstPersonController : MonoBehaviour
     {
         lookInput = value.Get<Vector2>();
     }
+
+    public void OnBrisk(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            isBrisk = !isBrisk;
+        }
+    }
+
+    public void OnInteract(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+            Debug.DrawRay(ray.origin, ray.direction + ray.direction * interactRange, Color.red, 2f);
+            RaycastHit hit;
+            
+            if (Physics.Raycast(ray, out hit, interactRange))
+                if (hit.collider.TryGetComponent(out IInteractable interactable))
+                {
+                    interactable.Interact();
+                    Debug.Log("Interacting with " + hit.collider.name);
+                }
+        }
+    }
     public void OnJump(InputValue value)
     {
         jumpPressed = value.isPressed;
@@ -114,7 +203,8 @@ public class FirstPersonController : MonoBehaviour
 
     private float GetMovementSpeed()
     {
-        return new Vector3(moveInput.x, 0, moveInput.y).magnitude * moveSpeed;
+        float baseSpeed = isBrisk ? moveSpeed * briskMultiplier : moveSpeed;
+        return moveInput.magnitude * baseSpeed;
     }
 
 }
