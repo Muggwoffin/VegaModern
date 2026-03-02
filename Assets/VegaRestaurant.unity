@@ -131,8 +131,8 @@ GameObject:
   - component: {fileID: 202185371}
   - component: {fileID: 202185370}
   - component: {fileID: 202185369}
-  - component: {fileID: 202185373}
   - component: {fileID: 202185372}
+  - component: {fileID: 202185373}
   m_Layer: 0
   m_Name: Vinyl Player
   m_TagString: Untagged
@@ -245,7 +245,7 @@ AudioSource:
   m_GameObject: {fileID: 202185367}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 4145611274155087957, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
+  OutputAudioMixerGroup: {fileID: -1380585288179938186, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: d50da65b522fb094ab857962ef0d504a, type: 3}
   m_PlayOnAwake: 0
@@ -344,10 +344,11 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6498b845147bcf64ea12c0d1056adfe6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RadioSpeaker
-  radioOnSnapshot: {fileID: -8114628146213245015, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
-  radioOffSnapshot: {fileID: -5673680274602227382, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
-  transitionTime: 3
+  m_EditorClassIdentifier: Assembly-CSharp::MusicSpeaker
+  radioOnSnapshot: {fileID: 0}
+  radioOffSnapshot: {fileID: 0}
+  transitionTime: 1.5
+  mixer: {fileID: 24100000, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
 --- !u!1 &203844586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1760,6 +1761,26 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 1146061150542680063, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1146061150542680063, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1146061150542680063, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1146061150542680063, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1146061150542680063, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 1434858371378189395, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: bobSpeed
       value: 2
@@ -1874,27 +1895,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.17
+      value: 0.16999996
       objectReference: {fileID: 0}
     - target: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.77
+      value: -4.770001
       objectReference: {fileID: 0}
     - target: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.42230195
+      value: -0.38268322
       objectReference: {fileID: 0}
     - target: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9064553
+      value: 0.9238797
       objectReference: {fileID: 0}
     - target: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1902,7 +1923,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -130.04
+      value: 225
       objectReference: {fileID: 0}
     - target: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2063,8 +2084,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5be4f3ecf453ed4f8f711b92a2c7f32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RadioSpeaker
-  radioOnSnapshot: {fileID: -8114628146213245015, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
-  radioOffSnapshot: {fileID: -5673680274602227382, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
+  radioOnSnapshot: {fileID: -8653469206529395723, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
+  radioOffSnapshot: {fileID: -6890753637088162053, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
   transitionTime: 1.5
 --- !u!82 &2109922514
 AudioSource:
@@ -2472,6 +2493,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 6391397478705835837, guid: 0585aab8325a0a442a650bcd39244e10, type: 3}
+    - {fileID: 7523944592968920860, guid: 0585aab8325a0a442a650bcd39244e10, type: 3}
+    - {fileID: 6662483833920610146, guid: 0585aab8325a0a442a650bcd39244e10, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7224458238486152225, guid: 0585aab8325a0a442a650bcd39244e10, type: 3}

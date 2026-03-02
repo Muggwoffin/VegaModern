@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -8,6 +9,7 @@ public class MusicSpeaker : MonoBehaviour, IInteractable
     [Header("Mixer Settings")] public AudioMixerSnapshot radioOnSnapshot;
     public AudioMixerSnapshot radioOffSnapshot;
     public float transitionTime = 1.5f;
+    public AudioMixer mixer;
 
     private bool isPlaying = false;
     private AudioSource vinylAudio;
@@ -15,28 +17,48 @@ public class MusicSpeaker : MonoBehaviour, IInteractable
     void Start()
     {
         vinylAudio = GetComponent<AudioSource>();
-        radioOffSnapshot.TransitionTo(0f);
+        mixer.SetFloat("VinylVol", -80f);
     }
 
     public void Interact()
     {
         isPlaying = !isPlaying;
+        StopAllCoroutines();
+        
         if (isPlaying)
         {
             vinylAudio.Play();
-            StartCoroutine(FadeMixerGroup("VinylVol", 0f));
+            StartCoroutine(FadeVinyl(0f));
         }
         else
         {
-            radioOffSnapshot.TransitionTo(transitionTime);
-            Invoke("RadioStop", transitionTime);
+            StartCoroutine(FadeVinyl(-80f));
+            Invoke("StopAudio", transitionTime);
         }
+        
+    }
+
+    private IEnumerator FadeVinyl(float targetVolume)
+    {
+        float currentTime = 0;
+        float currentVol;
+        mixer.GetFloat("VinylVol", out currentVol);
+
+        while (currentTime < transitionTime)
+        {
+            currentTime += Time.deltaTime;
+            float newVol = Mathf.Lerp(currentVol, targetVolume, currentTime / transitionTime);
+            mixer.SetFloat("VinylVol", newVol);
+
+            yield return null;
+        }
+        
     }
     
 
     private void StopAudio()
     {
-    vinylAudio.Stop();
+    if (!isPlaying) vinylAudio.Stop();
     }
 
 
