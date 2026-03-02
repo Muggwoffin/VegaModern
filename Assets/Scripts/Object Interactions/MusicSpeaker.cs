@@ -8,41 +8,35 @@ public class MusicSpeaker : MonoBehaviour, IInteractable
     [Header("Mixer Settings")] public AudioMixerSnapshot radioOnSnapshot;
     public AudioMixerSnapshot radioOffSnapshot;
     public float transitionTime = 1.5f;
-    
+
     private bool isPlaying = false;
-    private AudioSource radioAudio;
- 
+    private AudioSource vinylAudio;
+
     void Start()
     {
-        radioAudio = GetComponent<AudioSource>();
+        vinylAudio = GetComponent<AudioSource>();
         radioOffSnapshot.TransitionTo(0f);
     }
 
     public void Interact()
     {
-       isPlaying = !isPlaying;
-       if (isPlaying)
-       {
-           CancelInvoke("RadioStop");
-           RadioPlay();
-           radioOnSnapshot.TransitionTo(transitionTime);
-       }
-       else
-       {
-           radioOffSnapshot.TransitionTo(transitionTime);
-           Invoke ("RadioStop", transitionTime);
-       }
+        isPlaying = !isPlaying;
+        if (isPlaying)
+        {
+            vinylAudio.Play();
+            StartCoroutine(FadeMixerGroup("VinylVol", 0f));
+        }
+        else
+        {
+            radioOffSnapshot.TransitionTo(transitionTime);
+            Invoke("RadioStop", transitionTime);
+        }
     }
+    
 
-    private void RadioPlay()
+    private void StopAudio()
     {
-        if (radioAudio != null) radioAudio.Play();
-        Debug.Log("Playing Radio Audio");
-    }
-    private void RadioStop()
-    {
-        Debug.Log("Radio off");
-        if (radioAudio != null) radioAudio.Stop();
+    vinylAudio.Stop();
     }
 
 

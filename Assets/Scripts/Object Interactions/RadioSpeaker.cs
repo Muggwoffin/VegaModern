@@ -9,41 +9,25 @@ public class RadioSpeaker : MonoBehaviour, IInteractable
     public AudioMixerSnapshot radioOffSnapshot;
     public float transitionTime = 1.5f;
     
-    private bool isPlaying = false;
-    private AudioSource radioAudio;
+    private bool isTunedIn = false;
+
  
     void Start()
     {
-        radioAudio = GetComponent<AudioSource>();
         radioOffSnapshot.TransitionTo(0f);
     }
 
     public void Interact()
-    {
-        isPlaying = !isPlaying;
-        if (isPlaying)
+    {   
+        isTunedIn = !isTunedIn;
+        if (isTunedIn)
         {
-            CancelInvoke("RadioStop");
-            RadioPlay();
             radioOnSnapshot.TransitionTo(transitionTime);
         }
         else
         {
             radioOffSnapshot.TransitionTo(transitionTime);
-            Invoke ("RadioStop", transitionTime);
         }
     }
-
-    private void RadioPlay()
-    {
-        if (radioAudio != null) radioAudio.Play();
-        Debug.Log("Playing Radio Audio");
-    }
-    private void RadioStop()
-    {
-        Debug.Log("Radio off");
-        if (radioAudio != null) radioAudio.Stop();
-    }
-
-
+    
 }
