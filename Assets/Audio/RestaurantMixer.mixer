@@ -183,6 +183,8 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: 15009dc4add82fd4386bcaab3bdff256
+    name: RadioVol
   - guid: cdf3b0e838e7c9446b3c779155d97b49
     name: VinylVol
   m_AudioMixerGroupViews:
