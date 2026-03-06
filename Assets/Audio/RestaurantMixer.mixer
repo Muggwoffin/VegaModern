@@ -33,6 +33,24 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!244 &-8098216498735601913
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: b6a5817d730a73e4aa5864e7b034deb4
+  m_EffectName: Lowpass
+  m_MixLevel: 530c71bc63dc45b41b2c66aaec57b3fd
+  m_Parameters:
+  - m_ParameterName: Cutoff freq
+    m_GUID: b037a32730d42ed4dbab4ea72289e7fa
+  - m_ParameterName: Resonance
+    m_GUID: 21aab8fbb62c59e47813efd546d9b77c
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-7067183173570693825
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -183,6 +201,8 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: b037a32730d42ed4dbab4ea72289e7fa
+    name: MasterMuffle
   - guid: 15009dc4add82fd4386bcaab3bdff256
     name: RadioVol
   - guid: cdf3b0e838e7c9446b3c779155d97b49
@@ -212,6 +232,7 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 24400004}
+  - {fileID: -8098216498735601913}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
