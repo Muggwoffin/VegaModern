@@ -11,6 +11,8 @@ public class AudioMuffle : MonoBehaviour
     public float muffledFrequency = 500f;
     public float transitionSpeed = 5f;
 
+    public string mixerParameter = "RadioMuffle";
+    
     private float targetFreq;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -36,8 +38,8 @@ public class AudioMuffle : MonoBehaviour
             Debug.DrawRay(transform.position, direction, Color.green);
         }
         float currentFreq;
-        mixer.GetFloat("MasterMuffle", out currentFreq);
+        mixer.GetFloat(mixerParameter, out currentFreq);
         float nextFreq = Mathf.Lerp(currentFreq, targetFreq, Time.deltaTime * transitionSpeed);
-        mixer.SetFloat("MasterMuffle", nextFreq);
+        mixer.SetFloat(mixerParameter, nextFreq);
     }
 }
