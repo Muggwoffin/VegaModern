@@ -98,6 +98,39 @@ AudioMixerSnapshotController:
     00f887095594def4ab802174a7fe605a: 500
     e63e03499db26ee4a86757a5871ba4f8: 0.1
   m_TransitionOverrides: {}
+--- !u!244 &-6569248224377855418
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 326fea8dc8ef7c84db34d19f7882f6c8
+  m_EffectName: Attenuation
+  m_MixLevel: 8d2bebd81eec1b043ab81fb841bd90a2
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-5894139951569371467
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CafeChannel
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: dc966305edc1a2649a20077264f986da
+  m_Children: []
+  m_Volume: 92b06f8669bc2814db2d643752c0e928
+  m_Pitch: 2794a17c040d4ef45adc3d5f17e7f047
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -1160190614709775252}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &-4751264411037389556
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -201,6 +234,20 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-1160190614709775252
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 56186ac0e6d851543b299994fc4099bd
+  m_EffectName: Attenuation
+  m_MixLevel: 240aa616a975fbf488e06e9fe2b06729
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-811304240483143020
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -256,6 +303,8 @@ AudioMixerController:
     - d5bba5ab9458c9c45a8a5e49bf64d7a0
     - b5b87a9c917983945ac0f54b0c92e104
     - d5d38828bc01f3a41b440b0f3f251691
+    - 599b7f3aaafbaf84e8ea11105b48f02f
+    - dc966305edc1a2649a20077264f986da
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: -6890753637088162053}
@@ -273,6 +322,8 @@ AudioMixerGroupController:
   - {fileID: -1380585288179938186}
   - {fileID: -4408417590003764333}
   - {fileID: 7317372202376765889}
+  - {fileID: 7894849819590595391}
+  - {fileID: -5894139951569371467}
   m_Volume: 533dca48bd299e148b040a5b60105b12
   m_Pitch: ba569c71eb419674bae4a7e548a99fa6
   m_Send: 00000000000000000000000000000000
@@ -426,6 +477,25 @@ AudioMixerGroupController:
   m_Effects:
   - {fileID: 6710743193047390830}
   - {fileID: -811304240483143020}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!243 &7894849819590595391
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: StreetChannel
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 599b7f3aaafbaf84e8ea11105b48f02f
+  m_Children: []
+  m_Volume: be4c6ab7ee74a764ab40da70e9386a35
+  m_Pitch: d1f457cb579c03646a568cf7687ccabd
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -6569248224377855418}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
