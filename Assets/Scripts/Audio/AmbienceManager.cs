@@ -10,6 +10,7 @@ public class AmbienceManager : MonoBehaviour
     {
         mixer.SetFloat("StreetVol", 0f);
         mixer.SetFloat("CafeVol", -80f);
+        mixer.SetFloat("KitchenVol", -80f);
     }
 
 
@@ -19,6 +20,7 @@ public class AmbienceManager : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(FadeMixer("StreetVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("CafeVol", 0f, fadeDuration));
+        StartCoroutine(FadeMixer("KitchenVol", -80f, fadeDuration));
         Debug.Log("Entered Cafe");
     }
     
@@ -27,7 +29,22 @@ public class AmbienceManager : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(FadeMixer("CafeVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("StreetVol", 0f, fadeDuration));
+        StartCoroutine(FadeMixer("KitchenVol", -80f, fadeDuration));
         Debug.Log("Exited Cafe");
+    }
+
+    public void EnterKitchen()
+    {
+        StopAllCoroutines();
+        StartCoroutine(FadeMixer("KitchenVol", 0f, fadeDuration));
+        StartCoroutine(FadeMixer("CafeVol", -10f, fadeDuration));
+    }
+    
+    public void ExitKitchen()
+    {
+        StopAllCoroutines();
+        StartCoroutine(FadeMixer("KitchenVol", -80f, fadeDuration));
+        StartCoroutine(FadeMixer("CafeVol", 0f, fadeDuration));
     }
 
     IEnumerator FadeMixer(string param, float targetDb, float duration)

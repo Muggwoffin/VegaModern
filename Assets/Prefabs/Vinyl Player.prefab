@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1737672058943727447}
   - component: {fileID: 3661825722921535111}
   - component: {fileID: 8634118257212395965}
+  - component: {fileID: 6508135292882348364}
   m_Layer: 0
   m_Name: Vinyl Player
   m_TagString: Untagged
@@ -29,14 +30,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2690548815547104007}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.99998957, z: -0, w: 0.004583624}
+  m_LocalRotation: {x: 0, y: 0.9999895, z: 0, w: 0.004581422}
   m_LocalPosition: {x: 17.75, y: 0.742, z: 10.299}
   m_LocalScale: {x: 1.0633825, y: 1.0633826, z: 1.0633825}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1415292602480033830}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 179.475, z: 0}
 --- !u!33 &5638154155520210390
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -230,6 +231,27 @@ MonoBehaviour:
   radioOffSnapshot: {fileID: 0}
   transitionTime: 1.5
   mixer: {fileID: 24100000, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
+--- !u!114 &6508135292882348364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690548815547104007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b57397f4e0c2cc949a99e9a3449ea29e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioMuffle
+  mixer: {fileID: 24100000, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
+  player: {fileID: 0}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  clearFrequency: 5000
+  muffledFrequency: 500
+  transitionSpeed: 5
+  mixerParameter: VinylMuffle
 --- !u!1001 &538914393669570861
 PrefabInstance:
   m_ObjectHideFlags: 0
