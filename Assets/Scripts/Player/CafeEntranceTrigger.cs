@@ -6,25 +6,25 @@ public class CafeEntranceTrigger : MonoBehaviour
  public AmbienceManager ambienceManager;
 
  private float cooldown = 1.0f;
- private float lastEnterTime = -999f;
- private float lastExitTime = -999f;
+ private float lastTriggerTime= -999f;
+ 
 
 
  void OnTriggerEnter(Collider other)
  {
      Debug.Log("CAFE TRIGGER HIT BY: " + other.gameObject.name);
-     if (other.CompareTag("Player") && Time.time > lastEnterTime + cooldown)
+     if (other.CompareTag("Player") && Time.time > lastTriggerTime + cooldown)
      {
-         lastEnterTime = Time.time;
+         lastTriggerTime = Time.time;
          ambienceManager.EnterCafe();
      }
  }
 
  void OnTriggerExit(Collider other)
  {
-     if (other.CompareTag("Player") && Time.time > lastExitTime + cooldown)
+     if (other.CompareTag("Player") && Time.time > lastTriggerTime + cooldown)
      {
-         lastExitTime = Time.time;
+         lastTriggerTime= Time.time;
          ambienceManager.ExitCafe();
      }
      
