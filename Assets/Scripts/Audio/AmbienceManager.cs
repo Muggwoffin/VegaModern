@@ -29,12 +29,14 @@ public class AmbienceManager : MonoBehaviour
 
     public void EnterCafe()
     {
+        StopAllCoroutines();
         StartCoroutine(FadeMixer("StreetVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("CafeVol", 0f, fadeDuration));
     }
     
     public void ExitCafe()
     {
+        StopAllCoroutines();
         StartCoroutine(FadeMixer("CafeVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("StreetVol", 0f, fadeDuration));
     }
