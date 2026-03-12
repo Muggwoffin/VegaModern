@@ -12,6 +12,7 @@ public class AmbienceManager : MonoBehaviour
         mixer.SetFloat("CafeVol", -80f);
     }
 
+    //remove this debug toggle and eventually switch back to the new input system
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))

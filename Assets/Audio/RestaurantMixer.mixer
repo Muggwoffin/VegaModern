@@ -94,6 +94,7 @@ AudioMixerSnapshotController:
   m_SnapshotID: 7cd866b34f0d6344b8ba9c8d3e8e4165
   m_FloatValues:
     15009dc4add82fd4386bcaab3bdff256: -80
+    92b06f8669bc2814db2d643752c0e928: -80
     cdf3b0e838e7c9446b3c779155d97b49: -80
     00f887095594def4ab802174a7fe605a: 500
     e63e03499db26ee4a86757a5871ba4f8: 0.1
@@ -286,12 +287,16 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: 92b06f8669bc2814db2d643752c0e928
+    name: CafeVol
   - guid: b037a32730d42ed4dbab4ea72289e7fa
     name: MasterMuffle
   - guid: 15009dc4add82fd4386bcaab3bdff256
     name: RadioVol
   - guid: a85de0d246531504f95f018cb5be1c63
     name: RadioMuffle
+  - guid: be4c6ab7ee74a764ab40da70e9386a35
+    name: StreetVol
   - guid: cdf3b0e838e7c9446b3c779155d97b49
     name: VinylVol
   - guid: d789a3dfe61203d4cbc1e0a03f48c20f
