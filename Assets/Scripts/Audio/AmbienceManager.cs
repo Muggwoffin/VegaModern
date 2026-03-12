@@ -6,6 +6,9 @@ public class AmbienceManager : MonoBehaviour
 {
     public AudioMixer mixer;
     public float fadeDuration = 2.0f;
+    public enum AudioZone {Street, Cafe, Kitchen}
+    public AudioZone currentZone =  AudioZone.Street;
+    
     void Start()
     {
         mixer.SetFloat("StreetVol", 0f);
@@ -17,6 +20,8 @@ public class AmbienceManager : MonoBehaviour
 
     public void EnterCafe()
     {
+        Debug.Log(currentZone);
+        if  (currentZone == AudioZone.Cafe) return;
         StopAllCoroutines();
         StartCoroutine(FadeMixer("StreetVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("CafeVol", 0f, fadeDuration));
@@ -26,6 +31,8 @@ public class AmbienceManager : MonoBehaviour
     
     public void ExitCafe()
     {
+        Debug.Log(currentZone);
+        if  (currentZone != AudioZone.Cafe) return;
         StopAllCoroutines();
         StartCoroutine(FadeMixer("CafeVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("StreetVol", 0f, fadeDuration));
@@ -35,6 +42,8 @@ public class AmbienceManager : MonoBehaviour
 
     public void EnterKitchen()
     {
+        Debug.Log(currentZone);
+        if  (currentZone == AudioZone.Kitchen) return;
         StopAllCoroutines();
         StartCoroutine(FadeMixer("KitchenVol", 0f, fadeDuration));
         StartCoroutine(FadeMixer("CafeVol", -10f, fadeDuration));
@@ -42,6 +51,8 @@ public class AmbienceManager : MonoBehaviour
     
     public void ExitKitchen()
     {
+        Debug.Log(currentZone);
+        if  (currentZone != AudioZone.Kitchen) return;
         StopAllCoroutines();
         StartCoroutine(FadeMixer("KitchenVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("CafeVol", 0f, fadeDuration));
