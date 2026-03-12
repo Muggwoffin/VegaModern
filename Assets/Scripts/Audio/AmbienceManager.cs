@@ -12,6 +12,20 @@ public class AmbienceManager : MonoBehaviour
         mixer.SetFloat("CafeVol", -80f);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            EnterCafe();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ExitCafe();
+            
+        }
+    }
+
     public void EnterCafe()
     {
         StartCoroutine(FadeMixer("StreetVol", -80f, fadeDuration));
@@ -23,7 +37,21 @@ public class AmbienceManager : MonoBehaviour
         StartCoroutine(FadeMixer("CafeVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("StreetVol", 0f, fadeDuration));
     }
-    
-    
+
+    IEnumerator FadeMixer(string param, float targetDb, float duration)
+    {
+        float currentDb;
+        mixer.GetFloat(param, out currentDb);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float newDb = Mathf.Lerp(currentDb, targetDb, elapsed / duration);
+            mixer.SetFloat(param, newDb);
+            yield return null;
+        }
+        mixer.SetFloat(param, targetDb);
+    }
 
 }
