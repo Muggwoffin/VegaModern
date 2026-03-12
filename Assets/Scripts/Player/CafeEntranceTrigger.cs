@@ -10,6 +10,7 @@ public class CafeEntranceTrigger : MonoBehaviour
 
  void OnTriggerEnter(Collider other)
  {
+     Debug.Log("CAFE TRIGGER HIT BY: " + other.gameObject.name);
      if (other.CompareTag("Player") && Time.time > lastTriggerTime + cooldown)
      {
          lastTriggerTime = Time.time;
