@@ -12,26 +12,14 @@ public class AmbienceManager : MonoBehaviour
         mixer.SetFloat("CafeVol", -80f);
     }
 
-    //remove this debug toggle and eventually switch back to the new input system
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            EnterCafe();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            ExitCafe();
-            
-        }
-    }
+
 
     public void EnterCafe()
     {
         StopAllCoroutines();
         StartCoroutine(FadeMixer("StreetVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("CafeVol", 0f, fadeDuration));
+        Debug.Log("Entered Cafe");
     }
     
     public void ExitCafe()
@@ -39,6 +27,7 @@ public class AmbienceManager : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(FadeMixer("CafeVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("StreetVol", 0f, fadeDuration));
+        Debug.Log("Exited Cafe");
     }
 
     IEnumerator FadeMixer(string param, float targetDb, float duration)
