@@ -11,6 +11,7 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float normalFOV = 60f;
     [SerializeField] private float zoomFOV = 65f;
     [SerializeField] private float fovLerpSpeed = 5f;
+    [SerializeField] private float maxFOVSpeed = 5f;
     
     private PlayerInputHandler input;
     private PlayerMovement movement;
@@ -20,6 +21,10 @@ public class PlayerLook : MonoBehaviour
     {
         input = GetComponent<PlayerInputHandler>();
         movement = GetComponent<PlayerMovement>();
+
+        xRotation = 0f;
+        cameraTransform.localRotation = Quaternion.identity;
+        
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -45,8 +50,9 @@ public class PlayerLook : MonoBehaviour
 
     private void HandleFOV()
     {
-        float targetFOV = input.IsBrisk ? zoomFOV : normalFOV;
+        float t = Mathf.Clamp01(movement.CurrentSpeed / maxFOVSpeed);
+        float targetFOV = Mathf.Lerp(normalFOV, zoomFOV, t);
         playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * fovLerpSpeed);
-        
+
     }
 }

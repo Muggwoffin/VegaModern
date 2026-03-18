@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
 
-   
+   [SerializeField] private Transform cameraTransform;
     public float moveSpeed = 3f;
     public float gravity = -9.8f;
     public float briskMultiplier = 1.5f;
@@ -41,8 +41,17 @@ public class PlayerMovement : MonoBehaviour
     private void MoveCharacter()
     {
         Vector2 moveInput = input.MoveInput;
+        Vector3 camForward = cameraTransform.forward;
+        Vector3 camRight = cameraTransform.right;
         
-        Vector3 move = Vector3.right * moveInput.x + Vector3.forward * moveInput.y;
+        camForward.y = 0f;
+        camRight.y = 0f;
+        
+        camForward.Normalize();
+        camRight.Normalize();
+        
+        
+        Vector3 move = camRight * moveInput.x + camForward * moveInput.y;
         
         float currentSpeed = input.IsBrisk ? moveSpeed * briskMultiplier : moveSpeed;
         

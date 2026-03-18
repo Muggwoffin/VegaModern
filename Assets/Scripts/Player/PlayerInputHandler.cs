@@ -1,12 +1,20 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
+    public void Awake()
+    {
+        interactor = GetComponent<PlayerInteractor>();
+    }
+
     public Vector2 MoveInput {get; private set;}
     public Vector2 LookInput {get; private set;}
     public bool IsBrisk {get; private set;}
     public bool JumpPressed {get; private set;}
+    
+    private PlayerInteractor interactor;
     
     public void OnMove(InputValue value) 
     
@@ -37,9 +45,7 @@ public class PlayerInputHandler : MonoBehaviour
     
     public void OnInteract(InputValue value)
     {
-        if (value.isPressed)
-        {
-            if (!value.isPressed) return;
-        }
+        if (!value.isPressed) return;
+        interactor?.TryInteract();
     }
 }
