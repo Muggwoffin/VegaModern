@@ -21,7 +21,7 @@ public class AmbienceManager : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(FadeMixer("StreetVol", -80f, fadeDuration));
         StartCoroutine(FadeMixer("CafeVol", 0f, fadeDuration));
-        StartCoroutine(FadeMixer("KitchenVol", -80f, fadeDuration));
+        StartCoroutine(FadeMixer("KitchenVol", -10f, fadeDuration));
         Debug.Log("Entered Cafe");
     }
     
