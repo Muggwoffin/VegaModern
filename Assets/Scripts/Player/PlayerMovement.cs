@@ -22,6 +22,11 @@ public class PlayerMovement : MonoBehaviour
             return input.MoveInput.magnitude * baseSpeed;
         }
     }
+
+    public bool IsGrounded
+    {
+        get { return controller.isGrounded; }
+    }
     
     private CharacterController controller;
     private PlayerInputHandler input;
