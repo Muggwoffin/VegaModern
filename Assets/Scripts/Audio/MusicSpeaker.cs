@@ -4,10 +4,12 @@ using UnityEngine.Audio;
 
 public class MusicSpeaker : MonoBehaviour, IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Controls the vinyl player, restarting the sound effect each time the object is interacted with on/off
+    //Creates a slow fade effect
+    //Uses the interactable interface so the PlayerInteractor can trigger it with a raycast
 
     [Header("Mixer Settings")] public AudioMixerSnapshot radioOnSnapshot;
-    public AudioMixerSnapshot radioOffSnapshot;
+    public AudioMixerSnapshot radioOffSnapshot; //Unused for now but I may use snapshots again so keeping in at the moment
     public float transitionTime = 1.5f;
     public AudioMixer mixer;
 
@@ -22,6 +24,7 @@ public class MusicSpeaker : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        //Toggle playing on or off
         isPlaying = !isPlaying;
         StopAllCoroutines();
         
@@ -37,7 +40,7 @@ public class MusicSpeaker : MonoBehaviour, IInteractable
         }
         
     }
-
+// Creates a gradual fade over the transition time
     private IEnumerator FadeVinyl(float targetVolume)
     {
         float currentTime = 0;
@@ -55,7 +58,7 @@ public class MusicSpeaker : MonoBehaviour, IInteractable
         
     }
     
-
+//Stops the audio after a fade out
     private void StopAudio()
     {
     if (!isPlaying) vinylAudio.Stop();

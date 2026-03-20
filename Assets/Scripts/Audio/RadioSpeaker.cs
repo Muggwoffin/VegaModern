@@ -2,9 +2,11 @@ using UnityEngine;
 using UnityEngine.Audio;
 using System.Collections;
 
+// Controls the interactable radio in a way that keeps the audio playing unless the player 'tunes in' to the broadcast, rather than resetting each interaction
+// Also control a toggle for a dial light
+// Uses IInteractable so player can trigger from the reticle
 public class RadioSpeaker : MonoBehaviour, IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [Header("Mixer Settings")] 
     
@@ -19,6 +21,7 @@ public class RadioSpeaker : MonoBehaviour, IInteractable
  
     void Start()
     {
+        //Radio is muted when mixer is present, but it is playing
         if (mixer != null)
         {
             mixer.SetFloat("RadioVol", -80f);
@@ -32,8 +35,11 @@ public class RadioSpeaker : MonoBehaviour, IInteractable
         isTunedIn = !isTunedIn;
         StopAllCoroutines();
         
+        //Interaction? Yes, turn on the light
+        
         if (radioDialLight != null) radioDialLight.enabled = isTunedIn;
         
+        //Radio is on, tune in gradually to the radio
         if (isTunedIn)
         {
             StartCoroutine(FadeRadio(0f));
@@ -45,6 +51,7 @@ public class RadioSpeaker : MonoBehaviour, IInteractable
 
     }
 
+    //Calculate the fade gradually over time
     private IEnumerator FadeRadio(float targetVolume)
     {
         float currentTime = 0;
