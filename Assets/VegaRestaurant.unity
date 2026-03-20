@@ -4713,8 +4713,8 @@ MonoBehaviour:
   gravity: -9.8
   briskMultiplier: 1.5
   jumpHeight: 1
-  acceleration: 10
-  decceleration: 12
+  acceleration: 9
+  decceleration: 14
 --- !u!114 &1454894299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4766,6 +4766,21 @@ MonoBehaviour:
   reticleImage: {fileID: 2083181833}
   normalReticleColor: {r: 0.9607844, g: 0.9607844, b: 0.8627452, a: 1}
   interactReticleColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!114 &1454894307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454894296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35bce49ce88d7ca42b1051f659cb45d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHeadbob
+  cameraTransform: {fileID: 230094770}
+  bobSpeed: 3
+  bobAmount: 0.02
 --- !u!1 &1465705187
 GameObject:
   m_ObjectHideFlags: 0
@@ -44015,6 +44030,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2407790500526739509, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1454894303}
+    - targetCorrespondingSourceObject: {fileID: 2407790500526739509, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1454894307}
   m_SourcePrefab: {fileID: 100100000, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
 --- !u!1 &1896901864
 GameObject:
