@@ -23,9 +23,9 @@ public class AmbienceManager : MonoBehaviour
     {
         //Stop ensures there are no in-progress fades that could lead to a conflict as we transition
         StopAllCoroutines();
-        StartCoroutine(FadeMixer("StreetVol", -80f, fadeDuration));
-        StartCoroutine(FadeMixer("CafeVol", 0f, fadeDuration));
-        StartCoroutine(FadeMixer("KitchenVol", -10f, fadeDuration));
+        FadeController("StreetVol", -80f, fadeDuration);
+        FadeController("CafeVol", 0f, fadeDuration);
+        FadeController("KitchenVol", -10f, fadeDuration);
         Debug.Log("Entered Cafe");
     }
     
@@ -33,27 +33,26 @@ public class AmbienceManager : MonoBehaviour
     {
 
         StopAllCoroutines();
-        StartCoroutine(FadeMixer("CafeVol", -80f, fadeDuration));
-        StartCoroutine(FadeMixer("StreetVol", 0f, fadeDuration));
-        StartCoroutine(FadeMixer("KitchenVol", -80f, fadeDuration));
+        FadeController("StreetVol", -80f, fadeDuration);
+        FadeController("CafeVol", 0f, fadeDuration);
+        FadeController("KitchenVol", -80f, fadeDuration);
         Debug.Log("Exited Cafe");
     }
 
     public void EnterKitchen()
     {
 
-        StopAllCoroutines();
-        StartCoroutine(FadeMixer("KitchenVol", 0f, fadeDuration));
-        StartCoroutine(FadeMixer("CafeVol", -10f, fadeDuration));
+        StopAllCoroutines(); 
+        FadeController("KitchenVol", 0f, fadeDuration);
+       FadeController("CafeVol", -10f, fadeDuration);
     }
     
     public void ExitKitchen()
     {
-
         StopAllCoroutines();
-        StartCoroutine(FadeMixer("KitchenVol", -80f, fadeDuration));
-        StartCoroutine(FadeMixer("CafeVol", 0f, fadeDuration));
-        StartCoroutine(FadeMixer("StreetVol", -80f, fadeDuration));
+       FadeController("KitchenVol", -80f, fadeDuration);
+       FadeController("CafeVol", 0f, fadeDuration);
+       FadeController("StreetVol", -80f, fadeDuration);
     }
 
     //This co routine smoothly fades a single exposed parameter in the audio mixer from its current value to target dB over time
@@ -73,6 +72,12 @@ public class AmbienceManager : MonoBehaviour
             yield return null;
         }
         mixer.SetFloat(param, targetDb);
+    }
+    
+    // Slight refactoring to make the intent more clear and so any future changes live in one place
+    private void FadeController(string parameterName, float targetDb, float duration)
+    {
+        StartCoroutine(FadeMixer(parameterName, targetDb, duration));
     }
 
 }
