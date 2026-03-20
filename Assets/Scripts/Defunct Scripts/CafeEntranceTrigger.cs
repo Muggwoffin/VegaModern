@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//Defunct script, kept in folder to show my workings and iterative development
 public class CafeEntranceTrigger : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created

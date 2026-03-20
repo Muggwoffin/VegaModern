@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//Defunct script, kept in folder to show my workings and iterative development
 public class KitchenEntranceTrigger : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created

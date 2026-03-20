@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// A Switch statement controlled by an enumerated list that determines where the player is and pings the ambience manager to control the audio to reflec this
 public class LocationTrigger : MonoBehaviour
 {
     public enum Location {Street, Cafe, Kitchen}

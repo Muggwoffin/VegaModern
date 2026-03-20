@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
-
+//Defunct script, kept in folder to show my workings and iterative development
 public class FirstPersonController : MonoBehaviour
 {
     public CharacterController controller;
