@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
+
+//Controls a simple head bob camera effect to add realism and potentially help with motion sickness
 public class PlayerHeadbob : MonoBehaviour
 {
 
@@ -15,6 +17,7 @@ public class PlayerHeadbob : MonoBehaviour
 
     private void Awake()
     {
+        //Link to player movement as we use that for current speed and grounded
         movement = GetComponent<PlayerMovement>();
         originalCamPos = cameraTransform.localPosition;
     }
