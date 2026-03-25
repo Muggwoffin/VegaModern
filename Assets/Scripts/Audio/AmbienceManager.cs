@@ -33,8 +33,8 @@ public class AmbienceManager : MonoBehaviour
     {
 
         StopAllCoroutines();
-        FadeController("StreetVol", -80f, fadeDuration);
-        FadeController("CafeVol", 0f, fadeDuration);
+        FadeController("StreetVol", 0f, fadeDuration);
+        FadeController("CafeVol", -80f, fadeDuration);
         FadeController("KitchenVol", -80f, fadeDuration);
         Debug.Log("Exited Cafe");
     }
@@ -67,7 +67,7 @@ public class AmbienceManager : MonoBehaviour
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float newDb = Mathf.Lerp(currentDb, targetDb, elapsed / duration);
+            float newDb = Mathf.Lerp(currentDb, targetDb, Mathf.Pow(elapsed / duration, 2f));
             mixer.SetFloat(param, newDb);
             yield return null;
         }
