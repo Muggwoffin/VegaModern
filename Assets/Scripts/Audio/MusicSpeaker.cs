@@ -15,17 +15,24 @@ public class MusicSpeaker : MonoBehaviour, IInteractable
 
     private bool isPlaying = false;
     private AudioSource vinylAudio;
+    
+    [Header("Visual Settings")] 
+    public Light vinylDialLight;
+
 
     void Start()
     {
         vinylAudio = GetComponent<AudioSource>();
         mixer.SetFloat("VinylVol", -80f);
+        if (vinylDialLight != null) vinylDialLight.enabled = false;
     }
 
     public void Interact()
     {
         //Toggle playing on or off
         isPlaying = !isPlaying;
+        if (vinylDialLight != null) vinylDialLight.enabled = isPlaying;
+        
         StopAllCoroutines();
         
         if (isPlaying)
