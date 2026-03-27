@@ -52,5 +52,6 @@ public class AudioMuffle : MonoBehaviour
         currentFreq = Mathf.Lerp(currentFreq, targetFreq, Time.deltaTime * transitionSpeed);
         mixer.SetFloat(mixerParameter, currentFreq);
         
+        Debug.Log($"Setting {mixerParameter} to {currentFreq}");
     }
 }
