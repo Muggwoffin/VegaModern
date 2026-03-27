@@ -4710,11 +4710,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   cameraTransform: {fileID: 230094770}
   moveSpeed: 3
-  gravity: -9.8
   briskMultiplier: 1.5
-  jumpHeight: 1
   acceleration: 9
   decceleration: 14
+  gravity: -9.8
+  jumpHeight: 1
 --- !u!114 &1454894299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44400,7 +44400,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4078878098031550731, guid: f7a8b45e4e1fda741bb9df0d1843e17e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.2700002
+      value: -0.31
       objectReference: {fileID: 0}
     - target: {fileID: 4078878098031550731, guid: f7a8b45e4e1fda741bb9df0d1843e17e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -45122,7 +45122,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4078878098031550731, guid: f7a8b45e4e1fda741bb9df0d1843e17e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.2400007
+      value: 0.87
       objectReference: {fileID: 0}
     - target: {fileID: 4078878098031550731, guid: f7a8b45e4e1fda741bb9df0d1843e17e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -45130,7 +45130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4078878098031550731, guid: f7a8b45e4e1fda741bb9df0d1843e17e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.3219314
+      value: 2.32
       objectReference: {fileID: 0}
     - target: {fileID: 4078878098031550731, guid: f7a8b45e4e1fda741bb9df0d1843e17e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -45181,6 +45181,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2143621976}
     m_Modifications:
+    - target: {fileID: 3899731356592912140, guid: 0097ccb07945a274ca1cda269ed0d474, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -6772152174816410053, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
     - target: {fileID: 7018689425034585036, guid: 0097ccb07945a274ca1cda269ed0d474, type: 3}
       propertyPath: m_Name
       value: Cathedral Radio

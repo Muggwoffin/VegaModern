@@ -24,7 +24,7 @@ public class RadioSpeaker : MonoBehaviour, IInteractable
         //Radio is muted when mixer is present, but it is playing
         if (mixer != null)
         {
-            mixer.SetFloat("RadioVol", -80f);
+            mixer.SetFloat("RadioInteractVol", -80f);
         }
         
         if (radioDialLight != null) radioDialLight.enabled = false;
@@ -57,16 +57,16 @@ public class RadioSpeaker : MonoBehaviour, IInteractable
         float currentTime = 0;
         float currentVol;
         
-        mixer.GetFloat("RadioVol", out currentVol);
+        mixer.GetFloat("RadioInteractVol", out currentVol);
 
         while (currentTime < transitionTime)
         {
             currentTime += Time.deltaTime;
             float newVol = Mathf.Lerp(currentVol, targetVolume, currentTime / transitionTime);
-            mixer.SetFloat("RadioVol", newVol);
+            mixer.SetFloat("RadioInteractVol", newVol);
             yield return null;
         }
-        mixer.SetFloat("RadioVol", targetVolume);
+        mixer.SetFloat("RadioInteractVol", targetVolume);
     }
     
 }

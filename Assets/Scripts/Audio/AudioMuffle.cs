@@ -10,6 +10,7 @@ public class AudioMuffle : MonoBehaviour
 
     public Transform player;
     public LayerMask wallLayer;
+  
    
     [Header("Filter Settings")] public float clearFrequency = 5000f;
     public float muffledFrequency = 500f;
