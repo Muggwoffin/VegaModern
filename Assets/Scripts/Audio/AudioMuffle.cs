@@ -19,12 +19,14 @@ public class AudioMuffle : MonoBehaviour
     public string mixerParameter = "RadioMuffle"; //Name of the exposed mixer parameter
     
     private float targetFreq;
+    private float currentFreq;
     
 
     void Start()
     {
         //If there are no walls then everything starts clear
         targetFreq = clearFrequency;
+        currentFreq = clearFrequency;
     }
 
     void Update()
@@ -47,11 +49,8 @@ public class AudioMuffle : MonoBehaviour
             Debug.DrawRay(transform.position, direction, Color.green);
         }
         //Read the current cutoff value
-        float currentFreq;
-        mixer.GetFloat(mixerParameter, out currentFreq);
+        currentFreq = Mathf.Lerp(currentFreq, targetFreq, Time.deltaTime * transitionSpeed);
+        mixer.SetFloat(mixerParameter, currentFreq);
         
-        //SMoothly move from current to target frequency over time, determined by our transition speed
-        float nextFreq = Mathf.Lerp(currentFreq, targetFreq, Time.deltaTime * transitionSpeed);
-        mixer.SetFloat(mixerParameter, nextFreq);
     }
 }
