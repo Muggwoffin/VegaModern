@@ -56,4 +56,16 @@ public class PlayerInputHandler : MonoBehaviour
         //Ask the player interactor to try interacting with whatever is in front of the player. Basically a shorthand version of an if statement
         interactor?.TryInteract();
     }
+
+    public void ExitGame()
+    {
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();{
+        #endif
+        }
+    }
 }
