@@ -7,6 +7,7 @@ public class PatrollingEnemyAI : MonoBehaviour
     [SerializeField] private Transform[] waypoints; 
     [SerializeField] private float waypointWaitTime = 2f; 
     [SerializeField] private float fieldOfView = 120f;
+    [SerializeField] private float hearingRange = 5f;
      
     [Header("Chase Settings")] 
     [SerializeField] private float detectionRange = 10f; 
@@ -74,9 +75,8 @@ public class PatrollingEnemyAI : MonoBehaviour
         { 
             case State.Patrolling: 
                 Patrol(); 
-                 
-                // Simple distance check - can detect through walls 
-                if (distanceToPlayer <= detectionRange && CanSeePlayer()) 
+                //Detect with sight (fov and raycast) or through short range hearing
+                if ( CanSeePlayer() || CanHearPlayer()) 
                 { 
                     StartChasing(); 
                 } 
@@ -86,7 +86,7 @@ public class PatrollingEnemyAI : MonoBehaviour
                 Wait(); 
                  
                 // Can still detect player while waiting 
-                if (distanceToPlayer <= detectionRange && CanSeePlayer()) 
+                if ( CanSeePlayer() || CanHearPlayer()) 
                 { 
                     StartChasing(); 
                 } 
@@ -149,7 +149,7 @@ public class PatrollingEnemyAI : MonoBehaviour
         agent.SetDestination(player.position); 
          
         // Check if player is still in range 
-        if (distanceToPlayer <= detectionRange && CanSeePlayer()) 
+        if ( CanSeePlayer() || CanHearPlayer()) 
         { 
             // Player is still close, reset timer 
             chaseTimer = 0f; 
@@ -171,11 +171,17 @@ public class PatrollingEnemyAI : MonoBehaviour
     void ReturnToPatrol() 
     { 
         // Find the nearest waypoint 
-        int nearestWaypointIndex = FindNearestWaypoint(); 
-        currentWaypointIndex = nearestWaypointIndex; 
-         
-        agent.SetDestination(waypoints[currentWaypointIndex].position); 
-         
+        if (patrolMode == PatrolMode.Waypoint)
+        {
+            int nearestWaypointIndex = FindNearestWaypoint();
+            currentWaypointIndex = nearestWaypointIndex;
+            agent.SetDestination(waypoints[currentWaypointIndex].position);
+        }
+        else
+        {
+            MoveToRandomAreaPoint();
+        }
+
         // Once we reach the waypoint, resume patrolling 
         if (!agent.pathPending && agent.remainingDistance <= 
             agent.stoppingDistance) 
@@ -256,6 +262,9 @@ public class PatrollingEnemyAI : MonoBehaviour
             Gizmos.DrawLine(from, to);
         }
 
+        //hearing range
+        Gizmos.color = new Color(0f, 1f, 0f, 0.2f); 
+        Gizmos.DrawWireSphere(transform.position, hearingRange);
         // Line to player — green if visible, red if not
         if (player != null)
         {
@@ -301,6 +310,11 @@ public class PatrollingEnemyAI : MonoBehaviour
             return hit.transform.CompareTag("Player"); 
         } 
         return false; 
+    }
+
+    bool CanHearPlayer()
+    {
+        return Vector3.Distance(transform.position, player.position) <= hearingRange;
     }
     
     void ResetMaterialColors()
