@@ -6,10 +6,19 @@ public class PatrollingEnemyAI : MonoBehaviour
     [Header("Patrol Settings")] 
     [SerializeField] private Transform[] waypoints; 
     [SerializeField] private float waypointWaitTime = 2f; 
+    [SerializeField] private float fieldOfView = 120f;
      
     [Header("Chase Settings")] 
     [SerializeField] private float detectionRange = 10f; 
-    [SerializeField] private float chaseTimeout = 2f; 
+    [SerializeField] private float chaseTimeout = 2f;
+    [SerializeField] private LayerMask detectionMask; 
+    
+    [Header("Visual Feedback")]
+    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color chaseColor = Color.red;
+    
+    private Renderer[] enemyRenderers;
+    private Material[][] originalMaterials;
      
     private NavMeshAgent agent; 
     private Transform player; 
@@ -34,12 +43,18 @@ public class PatrollingEnemyAI : MonoBehaviour
         { 
             Debug.LogError("No waypoints assigned to " + gameObject.name); 
         } 
+        enemyRenderers = GetComponentsInChildren<Renderer>();
+        originalMaterials = new Material[enemyRenderers.Length][];
+        for (int i = 0; i < enemyRenderers.Length; i++)
+        {
+            originalMaterials[i] = enemyRenderers[i].sharedMaterials;
+        }
     } 
  
     void Update() 
     { 
-        float distanceToPlayer = Vector3.Distance(transform.position, 
-            player.position); 
+        Vector3 playerCenter = player.position + Vector3.up * 1f;
+        float distanceToPlayer = Vector3.Distance(transform.position, playerCenter); 
          
         switch (currentState) 
         { 
@@ -47,7 +62,7 @@ public class PatrollingEnemyAI : MonoBehaviour
                 Patrol(); 
                  
                 // Simple distance check - can detect through walls 
-                if (distanceToPlayer <= detectionRange) 
+                if (distanceToPlayer <= detectionRange && CanSeePlayer()) 
                 { 
                     StartChasing(); 
                 } 
@@ -57,7 +72,7 @@ public class PatrollingEnemyAI : MonoBehaviour
                 Wait(); 
                  
                 // Can still detect player while waiting 
-                if (distanceToPlayer <= detectionRange) 
+                if (distanceToPlayer <= detectionRange && CanSeePlayer()) 
                 { 
                     StartChasing(); 
                 } 
@@ -102,6 +117,9 @@ public class PatrollingEnemyAI : MonoBehaviour
     { 
         currentState = State.Chasing; 
         chaseTimer = 0f; 
+        
+        //Set materials to chase colour
+        SetMaterialColors(chaseColor);
     } 
  
     void Chase(float distanceToPlayer) 
@@ -110,7 +128,7 @@ public class PatrollingEnemyAI : MonoBehaviour
         agent.SetDestination(player.position); 
          
         // Check if player is still in range 
-        if (distanceToPlayer <= detectionRange) 
+        if (distanceToPlayer <= detectionRange && CanSeePlayer()) 
         { 
             // Player is still close, reset timer 
             chaseTimer = 0f; 
@@ -126,8 +144,9 @@ public class PatrollingEnemyAI : MonoBehaviour
                 currentState = State.Returning; 
             } 
         } 
-    } 
- 
+    }
+
+
     void ReturnToPatrol() 
     { 
         // Find the nearest waypoint 
@@ -143,6 +162,7 @@ public class PatrollingEnemyAI : MonoBehaviour
             currentState = State.Waiting; 
             waitTimer = 0f; 
         } 
+        ResetMaterialColors();
     }
     int FindNearestWaypoint() 
     { 
@@ -163,11 +183,84 @@ public class PatrollingEnemyAI : MonoBehaviour
          
         return nearestIndex; 
     } 
- 
-    // Visualize detection range in Scene view 
-    void OnDrawGizmosSelected() 
+    
+// Visualize detection range in Scene view
+    void OnDrawGizmosSelected()
+    {
+        Vector3 origin = transform.position + Vector3.up * 1.5f;
+
+        // Detection range sphere
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(origin, detectionRange);
+
+        // FOV cone lines
+        Vector3 leftBoundary = Quaternion.Euler(0, -fieldOfView * 0.5f, 0) 
+                               * transform.forward * detectionRange;
+        Vector3 rightBoundary = Quaternion.Euler(0, fieldOfView * 0.5f, 0) 
+                                * transform.forward * detectionRange;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(origin, origin + leftBoundary);
+        Gizmos.DrawLine(origin, origin + rightBoundary);
+
+        // Arc across the front of the cone
+        int arcSegments = 20;
+        float angleStep = fieldOfView / arcSegments;
+        float startAngle = -fieldOfView * 0.5f;
+
+        for (int i = 0; i < arcSegments; i++)
+        {
+            Vector3 from = origin + (Quaternion.Euler(0, startAngle + angleStep * i, 0) 
+                                     * transform.forward * detectionRange);
+            Vector3 to   = origin + (Quaternion.Euler(0, startAngle + angleStep * (i + 1), 0) 
+                                     * transform.forward * detectionRange);
+            Gizmos.DrawLine(from, to);
+        }
+
+        // Line to player — green if visible, red if not
+        if (player != null)
+        {
+            Gizmos.color = CanSeePlayer() ? Color.green : Color.red;
+            Gizmos.DrawLine(origin, player.position + Vector3.up * 1f);
+        }
+    }
+
+
+    void SetMaterialColors(Color color)
+    {
+        foreach (Renderer renderer in enemyRenderers)
+        {
+            foreach (Material material in renderer.materials)
+            {
+                material.color = color;
+            }
+        }
+    }
+
+    bool CanSeePlayer() 
     { 
-        Gizmos.color = Color.yellow; 
-        Gizmos.DrawWireSphere(transform.position, detectionRange); 
-    } 
+        Vector3 origin = transform.position + Vector3.up * 1.5f;
+        Vector3 playerCenter = player.position + Vector3.up * 1f;
+        Vector3 directionToPlayer = (playerCenter - origin).normalized;
+
+        // Check angle first - is player within FOV cone?
+        float angle = Vector3.Angle(transform.forward, directionToPlayer);
+        if (angle > fieldOfView * 0.5f) return false;
+
+        RaycastHit hit; 
+        if (Physics.Raycast(origin, directionToPlayer, out hit, detectionRange, detectionMask)) 
+        { 
+            return hit.transform.CompareTag("Player"); 
+        } 
+        return false; 
+    }
+    
+    void ResetMaterialColors()
+    {
+        for (int i = 0; i < enemyRenderers.Length; i++) 
+        { 
+            enemyRenderers[i].materials = originalMaterials[i]; 
+        } 
+            
+    }
 }
