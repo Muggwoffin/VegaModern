@@ -17,6 +17,18 @@ public class PatrollingEnemyAI : MonoBehaviour
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color chaseColor = Color.red;
     
+    [Header("Patrol Mode")]
+    [Tooltip("Waypoint is a fixed route. Area is a random wandering inside a zone")]
+    [SerializeField] private PatrolMode patrolMode = PatrolMode.Waypoint;
+    
+    [Header("Area Patrol Settings")] 
+    [Tooltip("Centre of the wander zone.")] 
+    [SerializeField] private Transform areaCenter; 
+    [Tooltip("Radius of the wander zone.")] 
+    [SerializeField] private float areaRadius = 10f; 
+    [Tooltip("Seconds to wait at each random point.")] 
+    [SerializeField] private float areaWaitTime = 2f; 
+    
     private Renderer[] enemyRenderers;
     private Material[][] originalMaterials;
      
@@ -26,6 +38,8 @@ public class PatrollingEnemyAI : MonoBehaviour
     private int currentWaypointIndex = 0; 
     private float waitTimer = 0f; 
     private float chaseTimer = 0f; 
+    
+    public enum PatrolMode { Waypoint, Area }
      
     private enum State { Patrolling, Waiting, Chasing, Returning } 
     private State currentState = State.Patrolling; 
@@ -102,13 +116,20 @@ public class PatrollingEnemyAI : MonoBehaviour
     void Wait() 
     { 
         waitTimer += Time.deltaTime; 
+        
+        float waitDuration = (patrolMode == PatrolMode.Waypoint) ? waypointWaitTime : areaWaitTime;
          
-        if (waitTimer >= waypointWaitTime) 
+        if (waitTimer >= waitDuration) 
         { 
-            // Move to next waypoint 
-            currentWaypointIndex = (currentWaypointIndex + 1) % 
-                                   waypoints.Length; 
-            agent.SetDestination(waypoints[currentWaypointIndex].position); 
+            if (patrolMode == PatrolMode.Waypoint) 
+            { 
+                currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length; 
+                agent.SetDestination(waypoints[currentWaypointIndex].position); 
+            } 
+            else 
+            { 
+                MoveToRandomAreaPoint(); 
+            } 
             currentState = State.Patrolling; 
         } 
     } 
@@ -182,7 +203,25 @@ public class PatrollingEnemyAI : MonoBehaviour
         } 
          
         return nearestIndex; 
-    } 
+    }
+
+    void MoveToRandomAreaPoint()
+    {
+        for (int attempt = 0; attempt < 10; attempt++)
+        {
+            Vector3 randomPoint = areaCenter.position + Random.insideUnitSphere * areaRadius;
+            randomPoint.y = areaCenter.position.y;
+            
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, areaRadius, NavMesh.AllAreas))
+            {
+                agent.SetDestination(hit.position);
+                return;
+            }
+        }
+        agent.SetDestination(areaCenter.position);
+        Debug.Log("No Nav Mesh point selected so moving to centre");
+    }
     
 // Visualize detection range in Scene view
     void OnDrawGizmosSelected()
@@ -222,6 +261,15 @@ public class PatrollingEnemyAI : MonoBehaviour
         {
             Gizmos.color = CanSeePlayer() ? Color.green : Color.red;
             Gizmos.DrawLine(origin, player.position + Vector3.up * 1f);
+        }
+        
+        // View area of Area Patrol mode
+        if (patrolMode == PatrolMode.Area && areaCenter != null) 
+        { 
+            Gizmos.color = new Color(0f, 0.8f, 1f, 0.25f); // translucent fill 
+            Gizmos.DrawSphere(areaCenter.position, areaRadius); 
+            Gizmos.color = new Color(0f, 0.8f, 1f, 1f);   // solid outline 
+            Gizmos.DrawWireSphere(areaCenter.position, areaRadius); 
         }
     }
 
