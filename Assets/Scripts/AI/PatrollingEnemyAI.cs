@@ -3,6 +3,10 @@ using UnityEngine.AI;
 
 public class PatrollingEnemyAI : MonoBehaviour
 {   
+    [Header("Behaviour Mode")]
+    [SerializeField] private BehaviourMode behaviourMode = BehaviourMode.Avoid;
+    public enum BehaviourMode { Chase, Avoid }
+    
     [Header("Patrol Settings")] 
     [SerializeField] private Transform[] waypoints; 
     [SerializeField] private float waypointWaitTime = 2f; 
@@ -13,6 +17,12 @@ public class PatrollingEnemyAI : MonoBehaviour
     [SerializeField] private float detectionRange = 10f; 
     [SerializeField] private float chaseTimeout = 2f;
     [SerializeField] private LayerMask detectionMask; 
+    
+    [Header("Avoidance Settings")]
+    [Tooltip("How close the player must get to trigger avoidance.")]
+    [SerializeField] private float avoidDistance = 3f;
+    [Tooltip("How far the ghost steps away from the player.")]
+    [SerializeField] private float avoidRadius = 5f;
     
     [Header("Visual Feedback")]
     [SerializeField] private Color normalColor = Color.white;
@@ -42,7 +52,7 @@ public class PatrollingEnemyAI : MonoBehaviour
     
     public enum PatrolMode { Waypoint, Area }
      
-    private enum State { Patrolling, Waiting, Chasing, Returning } 
+    private enum State { Patrolling, Waiting, Chasing, Returning, Avoiding } 
     private State currentState = State.Patrolling; 
  
     void Start() 
@@ -73,32 +83,36 @@ public class PatrollingEnemyAI : MonoBehaviour
          
         switch (currentState) 
         { 
-            case State.Patrolling: 
-                Patrol(); 
-                //Detect with sight (fov and raycast) or through short range hearing
-                if ( CanSeePlayer() || CanHearPlayer()) 
-                { 
-                    StartChasing(); 
-                } 
-                break; 
+            case State.Patrolling:
+                Patrol();
+                if (behaviourMode == BehaviourMode.Chase && (CanSeePlayer() || CanHearPlayer()))
+                    StartChasing();
+                else if (behaviourMode == BehaviourMode.Avoid && distanceToPlayer <= avoidDistance)
+                    StartAvoiding();
+                break;
                  
             case State.Waiting: 
                 Wait(); 
-                 
-                // Can still detect player while waiting 
-                if ( CanSeePlayer() || CanHearPlayer()) 
-                { 
-                    StartChasing(); 
-                } 
+                if (behaviourMode == BehaviourMode.Chase && (CanSeePlayer() || CanHearPlayer()))
+                    StartChasing();
+                else if (behaviourMode == BehaviourMode.Avoid && distanceToPlayer <= avoidDistance)
+                    StartAvoiding();
                 break; 
                  
             case State.Chasing: 
                 Chase(distanceToPlayer); 
                 break; 
-                 
-            case State.Returning: 
-                ReturnToPatrol(); 
-                break; 
+            
+            case State.Avoiding:
+                // Once the ghost has reached its avoid destination, return to patrol
+                if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+                    StartReturning();
+                break;
+
+            case State.Returning:
+                ReturnToPatrol();
+                break;
+            
         } 
     } 
  
@@ -111,7 +125,26 @@ public class PatrollingEnemyAI : MonoBehaviour
             currentState = State.Waiting; 
             waitTimer = 0f; 
         } 
-    } 
+    }
+
+    void StartAvoiding()
+    {
+        Vector3 awayFromPlayer = (transform.position - player.position).normalized;
+        Vector3 targetPoint = transform.position + awayFromPlayer * avoidRadius;
+        
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(targetPoint, out hit, avoidRadius, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+            currentState = State.Avoiding;
+        }
+    }
+
+    void StartReturning()
+    {
+        currentState = State.Returning;
+        ResetMaterialColors();
+    }
  
     void Wait() 
     { 
@@ -189,7 +222,6 @@ public class PatrollingEnemyAI : MonoBehaviour
             currentState = State.Waiting; 
             waitTimer = 0f; 
         } 
-        ResetMaterialColors();
     }
     int FindNearestWaypoint() 
     { 
@@ -233,45 +265,57 @@ public class PatrollingEnemyAI : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Vector3 origin = transform.position + Vector3.up * 1.5f;
-
-        // Detection range sphere
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(origin, detectionRange);
-
-        // FOV cone lines
-        Vector3 leftBoundary = Quaternion.Euler(0, -fieldOfView * 0.5f, 0) 
-                               * transform.forward * detectionRange;
-        Vector3 rightBoundary = Quaternion.Euler(0, fieldOfView * 0.5f, 0) 
-                                * transform.forward * detectionRange;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(origin, origin + leftBoundary);
-        Gizmos.DrawLine(origin, origin + rightBoundary);
-
-        // Arc across the front of the cone
-        int arcSegments = 20;
-        float angleStep = fieldOfView / arcSegments;
-        float startAngle = -fieldOfView * 0.5f;
-
-        for (int i = 0; i < arcSegments; i++)
+        if (behaviourMode == BehaviourMode.Chase)
         {
-            Vector3 from = origin + (Quaternion.Euler(0, startAngle + angleStep * i, 0) 
-                                     * transform.forward * detectionRange);
-            Vector3 to   = origin + (Quaternion.Euler(0, startAngle + angleStep * (i + 1), 0) 
-                                     * transform.forward * detectionRange);
-            Gizmos.DrawLine(from, to);
+            // Detection range sphere
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(origin, detectionRange);
+
+            // FOV cone lines
+            Vector3 leftBoundary = Quaternion.Euler(0, -fieldOfView * 0.5f, 0)
+                                   * transform.forward * detectionRange;
+            Vector3 rightBoundary = Quaternion.Euler(0, fieldOfView * 0.5f, 0)
+                                    * transform.forward * detectionRange;
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(origin, origin + leftBoundary);
+            Gizmos.DrawLine(origin, origin + rightBoundary);
+
+            // Arc across the front of the cone
+            int arcSegments = 20;
+            float angleStep = fieldOfView / arcSegments;
+            float startAngle = -fieldOfView * 0.5f;
+
+            for (int i = 0; i < arcSegments; i++)
+            {
+                Vector3 from = origin + (Quaternion.Euler(0, startAngle + angleStep * i, 0)
+                                         * transform.forward * detectionRange);
+                Vector3 to = origin + (Quaternion.Euler(0, startAngle + angleStep * (i + 1), 0)
+                                       * transform.forward * detectionRange);
+                Gizmos.DrawLine(from, to);
+            }
+
+            //hearing range
+            Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
+            Gizmos.DrawWireSphere(transform.position, hearingRange);
+            // Line to player — green if visible, red if not
+            if (player != null)
+            {
+                Gizmos.color = CanSeePlayer() ? Color.green : Color.red;
+                Gizmos.DrawLine(origin, player.position + Vector3.up * 1f);
+            }
+        }
+        else
+        {
+            // Avoidance trigger range
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(transform.position, avoidDistance);
+
+            // Step-away radius
+            Gizmos.color = new Color(0f, 1f, 1f, 0.3f);
+            Gizmos.DrawWireSphere(transform.position, avoidRadius);
         }
 
-        //hearing range
-        Gizmos.color = new Color(0f, 1f, 0f, 0.2f); 
-        Gizmos.DrawWireSphere(transform.position, hearingRange);
-        // Line to player — green if visible, red if not
-        if (player != null)
-        {
-            Gizmos.color = CanSeePlayer() ? Color.green : Color.red;
-            Gizmos.DrawLine(origin, player.position + Vector3.up * 1f);
-        }
-        
         // View area of Area Patrol mode
         if (patrolMode == PatrolMode.Area && areaCenter != null) 
         { 
