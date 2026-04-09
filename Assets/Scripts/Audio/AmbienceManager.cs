@@ -17,6 +17,7 @@ public class AmbienceManager : MonoBehaviour
         mixer.SetFloat("KitchenVol", -80f);
         mixer.SetFloat("RadioVol", -80f);
         mixer.SetFloat("VinylVol", -80f);
+        mixer.SetFloat("GhostVol", -80f);
     }
 
 
@@ -30,6 +31,7 @@ public class AmbienceManager : MonoBehaviour
         FadeController("KitchenVol", -10f, fadeDuration);
         FadeController("VinylVol", 0f, fadeDuration);
         FadeController("RadioVol", 0f, fadeDuration);
+        mixer.SetFloat("GhostVol", 0f);
         Debug.Log("Entered Cafe");
     }
     
@@ -42,6 +44,7 @@ public class AmbienceManager : MonoBehaviour
         FadeController("KitchenVol", -80f, fadeDuration);
         FadeController("VinylVol", -80f, fadeDuration);
         FadeController("RadioVol", -80f, fadeDuration);
+        mixer.SetFloat("GhostVol", -80f);
         Debug.Log("Exited Cafe");
     }
 

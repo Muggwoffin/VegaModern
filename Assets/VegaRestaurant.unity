@@ -1869,9 +1869,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1366788974}
     m_Modifications:
+    - target: {fileID: 661289816241621765, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b36b11cc52c29c14fa355603870d9b97, type: 2}
     - target: {fileID: 3292176948476581280, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.5
+      value: 24.51
       objectReference: {fileID: 0}
     - target: {fileID: 3292176948476581280, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1912,6 +1916,26 @@ PrefabInstance:
     - target: {fileID: 3646618558682747050, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
       propertyPath: m_Name
       value: WanderingGhost_Kitchen
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778932502002126606, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: MaxDistance
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778932502002126606, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -4032748730709246864, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
+    - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: areaCenter
+      value: 
+      objectReference: {fileID: 2001573983}
+    - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: areaRadius
+      value: 20.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: patrolMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
       propertyPath: waypoints.Array.size
@@ -2243,6 +2267,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1602225888}
+  - {fileID: 2001573983}
   m_Father: {fileID: 1366788974}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &538479294
@@ -4592,6 +4617,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1142225971}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1153403162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3646618558682747050, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+  m_PrefabInstance: {fileID: 5222237189931245085}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1153403168 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3778932502002126606, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+  m_PrefabInstance: {fileID: 5222237189931245085}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1153403169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153403162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b57397f4e0c2cc949a99e9a3449ea29e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioMuffle
+  mixer: {fileID: 24100000, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
+  player: {fileID: 1454894308}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  clearFrequency: 4000
+  muffledFrequency: 400
+  transitionSpeed: 5
+  mixerParameter: GhostMuffle
 --- !u!1 &1157204505
 GameObject:
   m_ObjectHideFlags: 0
@@ -5491,6 +5547,11 @@ MonoBehaviour:
   cameraTransform: {fileID: 230094770}
   bobSpeed: 3
   bobAmount: 0.02
+--- !u!4 &1454894308 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5324660262459953884, guid: 0e4483a7d7a7c9542b39530d26150478, type: 3}
+  m_PrefabInstance: {fileID: 1875259644}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1465705187
 GameObject:
   m_ObjectHideFlags: 0
@@ -42045,7 +42106,7 @@ Transform:
   m_GameObject: {fileID: 1602225887}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.63, y: 0, z: 6.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45801,6 +45862,37 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &2001573982
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2001573983}
+  m_Layer: 0
+  m_Name: Ghost2_AreaCentre
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2001573983
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001573982}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 30.59, y: 0, z: -15.53}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 508915919}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2083181831
 GameObject:
   m_ObjectHideFlags: 0
@@ -46441,38 +46533,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: WanderingGhost_Cafe
       objectReference: {fileID: 0}
+    - target: {fileID: 3778932502002126606, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: m_Volume
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778932502002126606, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 0c48b73cee661c84bad91da4bf633de2, type: 3}
+    - target: {fileID: 3778932502002126606, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: MaxDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778932502002126606, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: MinDistance
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778932502002126606, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -4032748730709246864, guid: 58ad664412b025c4491fe16c5704f2cf, type: 2}
     - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
       propertyPath: areaCenter
       value: 
       objectReference: {fileID: 1602225888}
     - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
-      propertyPath: areaRadius
-      value: 12.21
-      objectReference: {fileID: 0}
-    - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
-      propertyPath: patrolMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
-      propertyPath: 'waypoints.Array.data[0]'
+      propertyPath: audioSource
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
-      propertyPath: 'waypoints.Array.data[1]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
-      propertyPath: 'waypoints.Array.data[2]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8297405723173241225, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
-      propertyPath: 'waypoints.Array.data[3]'
-      value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1153403168}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3646618558682747050, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1153403169}
   m_SourcePrefab: {fileID: 100100000, guid: 10f32c90409f9fa42a7b6cbbfc1159f9, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

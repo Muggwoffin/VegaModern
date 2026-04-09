@@ -7,6 +7,10 @@ public class PatrollingEnemyAI : MonoBehaviour
     [SerializeField] private BehaviourMode behaviourMode = BehaviourMode.Avoid;
     public enum BehaviourMode { Chase, Avoid }
     
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip avoidanceClip;
+    
     [Header("Patrol Settings")] 
     [SerializeField] private Transform[] waypoints; 
     [SerializeField] private float waypointWaitTime = 2f; 
@@ -16,7 +20,7 @@ public class PatrollingEnemyAI : MonoBehaviour
     [Header("Chase Settings")] 
     [SerializeField] private float detectionRange = 10f; 
     [SerializeField] private float chaseTimeout = 2f;
-    [SerializeField] private LayerMask detectionMask; 
+    [SerializeField] private LayerMask detectionMask;
     
     [Header("Avoidance Settings")]
     [Tooltip("How close the player must get to trigger avoidance.")]
@@ -138,6 +142,9 @@ public class PatrollingEnemyAI : MonoBehaviour
             agent.SetDestination(hit.position);
             currentState = State.Avoiding;
         }
+        
+        if (audioSource != null && avoidanceClip != null)
+            audioSource.PlayOneShot(avoidanceClip);
     }
 
     void StartReturning()
